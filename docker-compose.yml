@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    build: .
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: mysql
+    ports:
+      - "3000:3000"
+    network_mode: "host"
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mysql
+    ports:
+      - "3306:3306"
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"

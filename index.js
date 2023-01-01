@@ -30,6 +30,20 @@ connection.connect(function(err) {
     return;
   }
   console.log('connected as id ' + connection.threadId);
+
+  connection.query('SHOW TABLES LIKE "images"', function(err, result) {
+    if (err) throw err;
+
+    // If the table does not exist, create it
+    if (result.length === 0) {
+      connection.query('CREATE TABLE images (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), url VARCHAR(255), source VARCHAR(255), dateStart DATE, dateEnd DATE)', function(err, result) {
+        if (err) throw err;
+        console.log('Table "images" has been created');
+      });
+    } else {
+      console.log('Table "images" already exists');
+    }
+  });
 });
 
 app.post('/add-image', async (req, res) => {
